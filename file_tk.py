@@ -10,16 +10,24 @@ def select_file():
 	print (root.filename)
 	entry.insert(0,root.filename)
 	entry.configure(state='readonly')
-def process(file):
-	#model=pickle.load_file("F:\\Downloads\\finalized_model.sav")
-	loaded_model = pickle.load(open("F:\\Downloads\\finalized_modelproto2.sav" , 'rb'))
-	X=pd.read_excel(feature_file)
-	y_list=model.predict(X)
-	df = pd.DataFrame (y_list)
-	filepath = 'prediction.xlsx'
-	df.to_excel(filepath, index=False)
-def download():
-	print("wait")
+
+class Processing:
+	def __init__(self):
+		y_list=[]
+
+	def process(self,file):
+		#model=pickle.load_file("F:\\Downloads\\finalized_model.sav")
+		loaded_model = pickle.load(open("F:\\Downloads\\finalized_modelproto2.sav" , 'rb'))
+		X=pd.read_excel(feature_file)
+		y_list=model.predict(X)
+		
+
+	def download(self):
+		print("wait")
+		df = pd.DataFrame (y_list)
+		filepath = 'prediction.xlsx'
+		df.to_excel(filepath, index=False)
+
 root = Tk()
 root.geometry("800x1200")
 Grid.rowconfigure(root, 0, weight=0)
@@ -32,10 +40,11 @@ entry=ttk.Entry(root,text=' ',textvariable=feature_file)
 #entry.pack()
 but.grid(row=0,column=0,padx=20,pady=200,sticky=N+S+E+W)
 entry.grid(row=0,column=1,padx=20,pady=200,sticky=N+S+E+W)
-submit=ttk.Button(root,text='UPLOAD FEATURES FILE',width=50,command=lambda: process(feature_file))
+p=Processing()
+submit=ttk.Button(root,text='UPLOAD FEATURES FILE',width=50,command=lambda: p.process(feature_file))
 submit.grid(row=2,column=0,sticky=N+S+E+W,pady=100,padx=100)
 submit.place(relx=0.5, rely=0.5, anchor=CENTER)
-download=ttk.Button(root,text='DOWNLOAD PREDICTION FILE',width=50,command=download)
+download=ttk.Button(root,text='DOWNLOAD PREDICTION FILE',width=50,command=p.download)
 download.grid(row=2,column=0,sticky=N+S+E+W,pady=100,padx=100)
 download.place(relx=0.5, rely=0.6, anchor=CENTER)
 '''photo = PhotoImage(file = "F:\\Iricenlogo.png")
